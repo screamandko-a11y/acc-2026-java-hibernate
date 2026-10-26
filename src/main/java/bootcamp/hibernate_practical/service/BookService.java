@@ -5,7 +5,9 @@ import bootcamp.hibernate_practical.dto.CreateBookRequest;
 import bootcamp.hibernate_practical.dto.UpdateBookRequest;
 import bootcamp.hibernate_practical.entity.Book;
 import bootcamp.hibernate_practical.repository.BookRepository;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
+
 
 
 import java.util.ArrayList;
@@ -46,12 +48,18 @@ public class BookService {
         return responses;
     }
 
+
+    // Find the book by its ID
+    // Throw RuntimeException if not found
+    // Convert the entity to BookResponse
     public BookResponse getBookById(Long id) {
-        // TODO
-        // Find the book by its ID
-        // Throw RuntimeException if not found
-        // Convert the entity to BookResponse
-        return null;
+        Optional<Book> result = bookRepository.findById(id);
+
+        if (result.isEmpty()) {
+            throw new RuntimeException("Book ID" + id + " not found");
+        }
+        Book book = result.get();
+        return mapToResponse(book);
     }
 
     public BookResponse updateBook(Long id, UpdateBookRequest request) {
