@@ -35,7 +35,7 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public BookResponse updateBook( @PathVariable Long id, @Valid @RequestBody UpdateBookRequest updateBookRequest) {
+    public BookResponse updateBook(@PathVariable Long id, @Valid @RequestBody UpdateBookRequest updateBookRequest) {
         return bookService.updateBook(id, updateBookRequest);
     }
 
@@ -59,10 +59,17 @@ public class BookController {
         return bookService.findTheNumberOfBooks();
     }
 
+    // bonus goal
+    @GetMapping("/title/{title}")
+    public List<BookResponse> findBooksByTitle(@PathVariable String title) {
+        return bookService.findBooksByTitle(title);
+    }
 
     // new method for my self-study
     @GetMapping("/after-year/{year}")
     public List<BookResponse> getBooksAfterYear(@PathVariable int year) {
         return bookService.findBooksAfterYear(year);
     }
+
+
 }

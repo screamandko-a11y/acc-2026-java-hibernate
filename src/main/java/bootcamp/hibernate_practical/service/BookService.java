@@ -128,7 +128,21 @@ public class BookService {
         return result;
     }
 
+    // bonus goals. Find tittle ignoring case
 
+    public List<BookResponse> findBooksByTitle(String title) {
+        List<Book> result =
+                bookRepository.findByTitleContainingIgnoreCase(title);
+
+        List<BookResponse> responses = new ArrayList<>();
+
+        for (Book book : result) {
+            BookResponse response = mapToResponse(book);
+            responses.add(response);
+        }
+
+        return responses;
+    }
 
 
     private BookResponse mapToResponse(Book book) {
