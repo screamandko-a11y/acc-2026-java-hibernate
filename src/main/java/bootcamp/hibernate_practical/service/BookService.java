@@ -7,6 +7,8 @@ import bootcamp.hibernate_practical.entity.Book;
 import bootcamp.hibernate_practical.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,12 +31,19 @@ public class BookService {
         return mapToResponse(savedBook);
     }
 
+
+    // Fetch all books from the repository
+    // Convert each Book entity into BookResponse DTO
+    // Return the list
     public List<BookResponse> getAllBooks() {
-        // TODO:
-        // Fetch all books from the repository
-        // Convert each Book entity into BookResponse DTO
-        // Return the list
-        return null;
+        List<Book> books = bookRepository.findAll();
+        List<BookResponse> responses = new ArrayList<>();
+
+        for (Book book : books) {
+            BookResponse response = mapToResponse(book);
+            responses.add(response);
+        }
+        return responses;
     }
 
     public BookResponse getBookById(Long id) {
@@ -69,7 +78,13 @@ public class BookService {
     }
 
     private BookResponse mapToResponse(Book book) {
-        // TODO: map Book to BookResponse
-        return null;
+        return new BookResponse(
+                book.getId(),
+                book.getTitle(),
+                book.getAuthor(),
+                book.getGenre(),
+                book.getPublicationYear(),
+                book.isAvailable()
+        );
     }
 }
