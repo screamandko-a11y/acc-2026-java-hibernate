@@ -73,20 +73,25 @@ public class BookService {
         }
 
         Book book = result.get();
-
         book.setTitle(request.getTitle());
         book.setAuthor(request.getAuthor());
         book.setGenre(request.getGenre());
         book.setPublicationYear(request.getPublicationYear());
         book.setAvailable(request.isAvailable());
-
         bookRepository.save(book);
 
         return mapToResponse(book);
     }
 
     public void deleteBook(Long id) {
-        // TODO
+        Optional<Book> result = bookRepository.findById(id);
+        if (result.isEmpty()) {
+            throw new RuntimeException("Book ID" + id + " not found");
+        }
+
+        Book book = result.get();
+        bookRepository.delete(book);
+
     }
 
     public List<BookResponse> findByAuthor(String author) {
