@@ -53,8 +53,6 @@ public class BookController {
 
     @GetMapping("/available")
     public List<BookResponse> getAvailableBooks() {
-        // TODO
-        return null;
+        return bookService.findAvailableBooks();
     }
-
 }

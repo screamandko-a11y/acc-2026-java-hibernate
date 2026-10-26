@@ -109,8 +109,13 @@ public class BookService {
 
 
     public List<BookResponse> findAvailableBooks(){
-        // TODO
-        return null;
+        List<Book> result = bookRepository.findByAvailableTrue();
+        List <BookResponse> responses = new ArrayList<>();
+        for (Book book : result) {
+            BookResponse response = mapToResponse(book);
+            responses.add(response);
+        }
+        return responses;
     }
 
     private BookResponse mapToResponse(Book book) {
