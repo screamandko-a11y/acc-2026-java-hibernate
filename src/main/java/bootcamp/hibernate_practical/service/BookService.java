@@ -54,7 +54,6 @@ public class BookService {
     // Convert the entity to BookResponse
     public BookResponse getBookById(Long id) {
         Optional<Book> result = bookRepository.findById(id);
-
         if (result.isEmpty()) {
             throw new RuntimeException("Book ID" + id + " not found");
         }
@@ -62,13 +61,28 @@ public class BookService {
         return mapToResponse(book);
     }
 
+
+    // Find existing book
+    // Update its fields
+    // Save the updated entity
+    // Convert to BookResponse
     public BookResponse updateBook(Long id, UpdateBookRequest request) {
-        // TODO
-        // Find existing book
-        // Update its fields
-        // Save the updated entity
-        // Convert to BookResponse
-        return null;
+        Optional<Book> result = bookRepository.findById(id);
+        if (result.isEmpty()) {
+            throw new RuntimeException("Book ID" + id + " not found");
+        }
+
+        Book book = result.get();
+
+        book.setTitle(request.getTitle());
+        book.setAuthor(request.getAuthor());
+        book.setGenre(request.getGenre());
+        book.setPublicationYear(request.getPublicationYear());
+        book.setAvailable(request.isAvailable());
+
+        bookRepository.save(book);
+
+        return mapToResponse(book);
     }
 
     public void deleteBook(Long id) {
