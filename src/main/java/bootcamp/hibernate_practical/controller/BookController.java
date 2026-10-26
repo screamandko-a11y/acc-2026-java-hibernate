@@ -24,20 +24,16 @@ public class BookController {
 
     @GetMapping
     public List<BookResponse> getAllBooks() {
-
-        // TODO
         return bookService.getAllBooks();
     }
 
     @GetMapping("/{id}")
     public BookResponse getBookById(@PathVariable Long id) {
-        // TODO
-        return null;
+        return bookService.getBookById(id);
     }
 
     @PutMapping("/{id}")
     public BookResponse updateBook(@PathVariable Long id, @RequestBody UpdateBookRequest updateBookRequest) {
-
         return bookService.updateBook(id, updateBookRequest);
     }
 
@@ -54,5 +50,10 @@ public class BookController {
     @GetMapping("/available")
     public List<BookResponse> getAvailableBooks() {
         return bookService.findAvailableBooks();
+    }
+
+    @GetMapping("/count")
+    public long getBookCount() {
+        return bookService.findTheNumberOfBooks();
     }
 }

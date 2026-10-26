@@ -118,6 +118,14 @@ public class BookService {
         return responses;
     }
 
+
+    // bonus goals, return nu
+
+    public long findTheNumberOfBooks () {
+        long result = bookRepository.count();
+        return result;
+    }
+
     private BookResponse mapToResponse(Book book) {
         return new BookResponse(
                 book.getId(),
