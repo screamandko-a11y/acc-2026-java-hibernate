@@ -95,9 +95,18 @@ public class BookService {
     }
 
     public List<BookResponse> findByAuthor(String author) {
-        // TODO
-        return null;
+        List<Book> result = bookRepository.findByAuthor(author);
+
+
+        List <BookResponse> responses = new ArrayList<>();
+        for (Book book : result) {
+            BookResponse response = mapToResponse(book);
+            responses.add(response);
+        }
+        return responses;
     }
+
+
 
     public List<BookResponse> findAvailableBooks(){
         // TODO
