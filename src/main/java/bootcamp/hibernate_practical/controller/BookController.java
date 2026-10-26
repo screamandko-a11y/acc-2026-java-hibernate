@@ -3,7 +3,9 @@ package bootcamp.hibernate_practical.controller;
 import bootcamp.hibernate_practical.dto.BookResponse;
 import bootcamp.hibernate_practical.dto.CreateBookRequest;
 import bootcamp.hibernate_practical.dto.UpdateBookRequest;
+import bootcamp.hibernate_practical.entity.Book;
 import bootcamp.hibernate_practical.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +20,7 @@ public class BookController {
     }
 
     @PostMapping
-    public BookResponse createBook(@RequestBody CreateBookRequest createBookRequest) {
+    public BookResponse createBook(@Valid @RequestBody CreateBookRequest createBookRequest) {
         return bookService.createBook(createBookRequest);
     }
 
@@ -33,7 +35,7 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public BookResponse updateBook(@PathVariable Long id, @RequestBody UpdateBookRequest updateBookRequest) {
+    public BookResponse updateBook( @PathVariable Long id, @Valid @RequestBody UpdateBookRequest updateBookRequest) {
         return bookService.updateBook(id, updateBookRequest);
     }
 
@@ -55,5 +57,12 @@ public class BookController {
     @GetMapping("/count")
     public long getBookCount() {
         return bookService.findTheNumberOfBooks();
+    }
+
+
+    // new method for my self-study
+    @GetMapping("/after-year/{year}")
+    public List<BookResponse> getBooksAfterYear(@PathVariable int year) {
+        return bookService.findBooksAfterYear(year);
     }
 }

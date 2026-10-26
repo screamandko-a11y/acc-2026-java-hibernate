@@ -6,8 +6,10 @@ import bootcamp.hibernate_practical.dto.UpdateBookRequest;
 import bootcamp.hibernate_practical.entity.Book;
 import bootcamp.hibernate_practical.repository.BookRepository;
 import java.util.Optional;
-import org.springframework.stereotype.Service;
 
+import jakarta.validation.Valid;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 import java.util.ArrayList;
@@ -98,7 +100,7 @@ public class BookService {
         List<Book> result = bookRepository.findByAuthor(author);
 
 
-        List <BookResponse> responses = new ArrayList<>();
+        List<BookResponse> responses = new ArrayList<>();
         for (Book book : result) {
             BookResponse response = mapToResponse(book);
             responses.add(response);
@@ -107,10 +109,9 @@ public class BookService {
     }
 
 
-
-    public List<BookResponse> findAvailableBooks(){
+    public List<BookResponse> findAvailableBooks() {
         List<Book> result = bookRepository.findByAvailableTrue();
-        List <BookResponse> responses = new ArrayList<>();
+        List<BookResponse> responses = new ArrayList<>();
         for (Book book : result) {
             BookResponse response = mapToResponse(book);
             responses.add(response);
@@ -119,12 +120,15 @@ public class BookService {
     }
 
 
-    // bonus goals, return nu
+    // bonus goals. Return: number of books.
 
-    public long findTheNumberOfBooks () {
+    public long findTheNumberOfBooks() {
         long result = bookRepository.count();
         return result;
     }
+
+
+
 
     private BookResponse mapToResponse(Book book) {
         return new BookResponse(
@@ -136,4 +140,16 @@ public class BookService {
                 book.isAvailable()
         );
     }
+
+    // new method for my self-study
+    public List<BookResponse> findBooksAfterYear(int year) {
+        List<Book> result = bookRepository.findByPublicationYearGreaterThan(year);
+        List<BookResponse> responses = new ArrayList<>();
+        for (Book book : result) {
+            BookResponse response = mapToResponse(book);
+            responses.add(response);
+        }
+        return responses;
+    }
 }
+
