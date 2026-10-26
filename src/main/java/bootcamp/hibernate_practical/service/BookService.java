@@ -6,6 +6,7 @@ import bootcamp.hibernate_practical.dto.UpdateBookRequest;
 import bootcamp.hibernate_practical.entity.Book;
 import bootcamp.hibernate_practical.repository.BookRepository;
 import java.util.Optional;
+import bootcamp.hibernate_practical.exceptions.BookNotFoundException;
 
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
@@ -57,7 +58,7 @@ public class BookService {
     public BookResponse getBookById(Long id) {
         Optional<Book> result = bookRepository.findById(id);
         if (result.isEmpty()) {
-            throw new RuntimeException("Book ID" + id + " not found");
+            throw new BookNotFoundException("Book ID " + id + " not found");
         }
         Book book = result.get();
         return mapToResponse(book);
@@ -71,7 +72,7 @@ public class BookService {
     public BookResponse updateBook(Long id, UpdateBookRequest request) {
         Optional<Book> result = bookRepository.findById(id);
         if (result.isEmpty()) {
-            throw new RuntimeException("Book ID" + id + " not found");
+            throw new BookNotFoundException("Book ID " + id + " not found");
         }
 
         Book book = result.get();
@@ -88,7 +89,7 @@ public class BookService {
     public void deleteBook(Long id) {
         Optional<Book> result = bookRepository.findById(id);
         if (result.isEmpty()) {
-            throw new RuntimeException("Book ID" + id + " not found");
+            throw new BookNotFoundException("Book ID " + id + " not found");
         }
 
         Book book = result.get();
