@@ -11,7 +11,7 @@ public class CreateBookRequest {
     @NotBlank (message = "Title must not be blank")
     private String title;
 
-    @NotBlank (message = "Author must not be blank ")
+    @NotBlank (message = "Author must not be blank")
     private String author;
 
     @NotBlank (message = "Genre must not be blank")
