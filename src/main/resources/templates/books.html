@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Library</title>
+</head>
+<body>
+
+<h1>Books</h1>
+
+<p th:if="${#lists.isEmpty(books)}">Books not found.</p>
+
+<table th:unless="${#lists.isEmpty(books)}">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th th:if="${isAdmin}">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.id}"></td>
+        <td th:text="${book.title}"></td>
+        <td th:text="${book.author}"></td>
+        <td th:if="${isAdmin}">
+            <form th:action="@{/books/{id}/delete(id=${book.id})}"
+                  method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Exit</button>
+</form>
+
+</body>
+</html>
