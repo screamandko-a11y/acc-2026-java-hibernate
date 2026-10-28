@@ -15,6 +15,14 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(ExternalApiException.class)
+    public ResponseEntity<Map<String, String>> handleExternalApi(
+            ExternalApiException exception) {
+        return ResponseEntity
+                .status(exception.getStatus())
+                .body(Map.of("message", exception.getMessage()));
+    }
+
     // return a message for each field with invalid data
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidation(
