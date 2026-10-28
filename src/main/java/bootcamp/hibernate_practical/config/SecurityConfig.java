@@ -49,6 +49,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .dispatcherTypeMatchers(DispatcherType.ERROR)
                         .permitAll()
+                        .requestMatchers("/books/new", "/books/*/edit")
+                        .hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/**")
                         .authenticated()
                         .anyRequest().hasRole("ADMIN")

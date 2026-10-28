@@ -7,6 +7,9 @@
 <body>
 
 <h1>Books</h1>
+<p th:if="${isAdmin}">
+    <a th:href="@{/books/new}">Create book</a>
+</p>
 
 <p th:if="${#lists.isEmpty(books)}">Books not found.</p>
 
@@ -27,6 +30,8 @@
         <td th:if="${isAdmin}">
             <form th:action="@{/books/{id}/delete(id=${book.id})}"
                   method="post">
+                <a th:href="@{/books/{id}/edit(id=${book.id})}">Edit</a>
+
                 <button type="submit">Delete</button>
             </form>
         </td>

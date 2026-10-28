@@ -3,8 +3,12 @@ package bootcamp.hibernate_practical.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
+import lombok.Setter;
+import bootcamp.hibernate_practical.dto.BookResponse;
+import bootcamp.hibernate_practical.dto.UpdateBookRequest;
 
 @Getter
+@Setter
 public class UpdateBookRequest {
 
     @NotBlank(message = "Title must not be blank")

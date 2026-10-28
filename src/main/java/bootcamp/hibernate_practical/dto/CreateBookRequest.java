@@ -3,9 +3,11 @@ package bootcamp.hibernate_practical.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
+import lombok.Setter;
 
 
 @Getter
+@Setter
 public class CreateBookRequest {
 
     @NotBlank (message = "Title must not be blank")
