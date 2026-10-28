@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestClientResponseException;
 
 import java.net.SocketTimeoutException;
 import java.net.http.HttpTimeoutException;
@@ -24,6 +23,21 @@ public class ExternalApiService {
             ExternalStatusResponse response = externalApiRestClient.get()
                     .uri("/partner/status")
                     .retrieve()
+                    .onStatus(
+                            status -> !status.is2xxSuccessful(),
+                            (request, partnerResponse) -> {
+                                String message = switch (partnerResponse.getStatusCode().value()) {
+                                    case 401 -> "External API authentication failed";
+                                    case 403 -> "External API denied access";
+                                    default -> "External API returned an error";
+                                };
+
+                                throw new ExternalApiException(
+                                        HttpStatus.BAD_GATEWAY,
+                                        message
+                                );
+                            }
+                    )
                     .body(ExternalStatusResponse.class);
 
             if (response == null || !"ok".equals(response.status())) {
@@ -34,18 +48,6 @@ public class ExternalApiService {
             }
 
             return response;
-
-        } catch (RestClientResponseException exception) {
-            String message = switch (exception.getStatusCode().value()) {
-                case 401 -> "External API authentication failed";
-                case 403 -> "External API denied access";
-                default -> "External API returned an error";
-            };
-
-            throw new ExternalApiException(
-                    HttpStatus.BAD_GATEWAY,
-                    message
-            );
 
         } catch (RestClientException exception) {
             if (isTimeout(exception)) {

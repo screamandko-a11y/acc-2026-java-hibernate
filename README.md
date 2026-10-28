@@ -93,6 +93,8 @@ If you change the partner port, also change `EXTERNAL_API_BASE_URL` for Java.
 The HTTP client uses a 2-second connection timeout and a 3-second read timeout.
 The read timeout limits how long a read waits for data. It is not a total time limit for the whole request.
 The client does not follow redirects.
+It accepts only successful HTTP status codes (`200` to `299`).
+It checks the status before reading JSON, so a redirect is an error even when its body looks valid.
 
 ## Browser pages
 
@@ -221,6 +223,7 @@ Keep Basic Auth in Postman set to a valid demo account.
 | Mode `forbidden` | `502` | `External API denied access` |
 | Partner stopped | `503` | `External API is unavailable` |
 | Mode `slow` | `504` | `External API timed out` |
+| Partner redirect (`3xx`) | `502` | `External API returned an error` |
 | Other HTTP error | `502` | `External API returned an error` |
 | Empty or invalid response | `502` | `Invalid response from external API` |
 
@@ -261,6 +264,7 @@ The tests check:
 - A timeout before headers or during body reading returns `504`.
 - A broken, empty, or invalid body returns `502`.
 - The client does not follow redirects.
+- Redirects with valid JSON are rejected before the JSON is read.
 - Error responses do not expose the test token or private partner details.
 
 Role checks and browser CSRF checks are manual in this project.
