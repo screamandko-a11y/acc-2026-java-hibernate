@@ -2,6 +2,7 @@ package bootcamp.hibernate_practical.service;
 
 import bootcamp.hibernate_practical.entity.AppUser;
 import bootcamp.hibernate_practical.repository.AppUserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,13 +11,10 @@ import org.springframework.security.core.userdetails.User;
 
 
 @Service
+@RequiredArgsConstructor
 public class AppUserDetailsService implements UserDetailsService {
 
     private final AppUserRepository appUserRepository;
-
-    public AppUserDetailsService(AppUserRepository appUserRepository) {
-        this.appUserRepository = appUserRepository;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

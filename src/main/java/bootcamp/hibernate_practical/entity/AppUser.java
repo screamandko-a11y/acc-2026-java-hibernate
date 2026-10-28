@@ -3,6 +3,8 @@ package bootcamp.hibernate_practical.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Getter
 @Entity
@@ -24,5 +26,14 @@ public class AppUser {
 
     @Column(nullable = false)
     private boolean enabled = true;
+
+    protected AppUser() {
+    }
+
+    public AppUser(String username, String passwordHash, Role role) {
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.role = role;
+    }
 
 }
