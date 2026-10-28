@@ -4,17 +4,13 @@ import bootcamp.hibernate_practical.dto.BookResponse;
 import bootcamp.hibernate_practical.dto.CreateBookRequest;
 import bootcamp.hibernate_practical.dto.UpdateBookRequest;
 import bootcamp.hibernate_practical.entity.Book;
-import bootcamp.hibernate_practical.repository.BookRepository;
-import java.util.Optional;
 import bootcamp.hibernate_practical.exceptions.BookNotFoundException;
-
-import jakarta.validation.Valid;
+import bootcamp.hibernate_practical.repository.BookRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookService {
@@ -36,10 +32,6 @@ public class BookService {
         return mapToResponse(savedBook);
     }
 
-
-    // Fetch all books from the repository
-    // Convert each Book entity into BookResponse DTO
-    // Return the list
     public List<BookResponse> getAllBooks() {
         List<Book> books = bookRepository.findAll();
         List<BookResponse> responses = new ArrayList<>();
@@ -51,10 +43,6 @@ public class BookService {
         return responses;
     }
 
-
-    // Find the book by its ID
-    // Throw RuntimeException if not found
-    // Convert the entity to BookResponse
     public BookResponse getBookById(Long id) {
         Optional<Book> result = bookRepository.findById(id);
         if (result.isEmpty()) {
@@ -65,10 +53,6 @@ public class BookService {
     }
 
 
-    // Find existing book
-    // Update its fields
-    // Save the updated entity
-    // Convert to BookResponse
     public BookResponse updateBook(Long id, UpdateBookRequest request) {
         Optional<Book> result = bookRepository.findById(id);
         if (result.isEmpty()) {
@@ -98,7 +82,7 @@ public class BookService {
     }
 
     public List<BookResponse> findByAuthor(String author) {
-        List<Book> result = bookRepository.findByAuthor(author);
+        List<Book> result = bookRepository.findByAuthorContainingIgnoreCase(author);
 
 
         List<BookResponse> responses = new ArrayList<>();
@@ -124,11 +108,10 @@ public class BookService {
     // bonus goals. Return: number of books.
 
     public long findTheNumberOfBooks() {
-        long result = bookRepository.count();
-        return result;
+        return bookRepository.count();
     }
 
-    // bonus goals. Find tittle ignoring case
+
 
     public List<BookResponse> findBooksByTitle(String title) {
         List<Book> result =
@@ -156,7 +139,7 @@ public class BookService {
         );
     }
 
-    // new method for my self-study
+
     public List<BookResponse> findBooksAfterYear(int year) {
         List<Book> result = bookRepository.findByPublicationYearGreaterThan(year);
         List<BookResponse> responses = new ArrayList<>();

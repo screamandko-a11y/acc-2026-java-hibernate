@@ -3,7 +3,6 @@ package bootcamp.hibernate_practical.controller;
 import bootcamp.hibernate_practical.dto.BookResponse;
 import bootcamp.hibernate_practical.dto.CreateBookRequest;
 import bootcamp.hibernate_practical.dto.UpdateBookRequest;
-import bootcamp.hibernate_practical.entity.Book;
 import bootcamp.hibernate_practical.service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;

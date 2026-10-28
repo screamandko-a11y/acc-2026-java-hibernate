@@ -1,8 +1,8 @@
 package bootcamp.hibernate_practical.dto;
 
 import jakarta.validation.constraints.Min;
-import lombok.Getter;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
 
 
 @Getter
