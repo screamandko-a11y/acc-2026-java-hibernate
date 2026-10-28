@@ -3,8 +3,6 @@ package bootcamp.hibernate_practical.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Getter
 @Entity

@@ -1,31 +1,34 @@
 package bootcamp.hibernate_practical.controller;
 
 import bootcamp.hibernate_practical.dto.BookResponse;
+import bootcamp.hibernate_practical.dto.CreateBookRequest;
 import bootcamp.hibernate_practical.dto.UpdateBookRequest;
 import bootcamp.hibernate_practical.service.BookService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import bootcamp.hibernate_practical.dto.CreateBookRequest;
-import jakarta.validation.Valid;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 
 @Controller
 @RequiredArgsConstructor
 public class BookPageController {
 
+    private static final String REDIRECT_TO_BOOKS = "redirect:/books";
+    private static final String BOOK_FORM_ATTRIBUTE = "bookForm";
+
     private final BookService bookService;
 
     @PostMapping("/books/{id}")
     public String updateBook(
             @PathVariable Long id,
-            @Valid @ModelAttribute("bookForm") UpdateBookRequest request,
+            @Valid @ModelAttribute(BOOK_FORM_ATTRIBUTE) UpdateBookRequest request,
             BindingResult bindingResult,
             Model model
     ) {
@@ -35,7 +38,7 @@ public class BookPageController {
         }
 
         bookService.updateBook(id, request);
-        return "redirect:/books";
+        return REDIRECT_TO_BOOKS;
     }
 
     @GetMapping("/books/{id}/edit")
@@ -49,20 +52,21 @@ public class BookPageController {
         form.setPublicationYear(book.getPublicationYear());
         form.setAvailable(book.isAvailable());
 
-        model.addAttribute("bookForm", form);
+        model.addAttribute(BOOK_FORM_ATTRIBUTE, form);
         model.addAttribute("bookId", id);
         return "book-edit";
     }
 
     @GetMapping("/books/new")
-    public String newBook(Model model) {model.addAttribute("bookForm", new CreateBookRequest());
+    public String newBook(Model model) {
+        model.addAttribute(BOOK_FORM_ATTRIBUTE, new CreateBookRequest());
         return "book-create";
 
     }
 
     @PostMapping("/books")
     public String createBook(
-            @Valid @ModelAttribute("bookForm") CreateBookRequest request,
+            @Valid @ModelAttribute(BOOK_FORM_ATTRIBUTE) CreateBookRequest request,
             BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
@@ -70,12 +74,12 @@ public class BookPageController {
         }
 
         bookService.createBook(request);
-        return "redirect:/books";
+        return REDIRECT_TO_BOOKS;
     }
 
     @GetMapping("/")
     public String home() {
-        return "redirect:/books";
+        return REDIRECT_TO_BOOKS;
     }
 
     @GetMapping("/books")
@@ -88,7 +92,7 @@ public class BookPageController {
     @PostMapping("/books/{id}/delete")
     public String deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
-        return "redirect:/books";
+        return REDIRECT_TO_BOOKS;
     }
 
 }
